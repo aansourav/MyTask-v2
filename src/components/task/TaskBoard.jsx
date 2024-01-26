@@ -1,21 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import AddTaskModal from "./AddTaskModal";
 import SearchTask from "./SearchTask";
 import TaskActions from "./TaskActions";
 import TaskList from "./TaskList";
+import { TaskContext } from "../../context";
 
 const TaskBoard = () => {
-  const defaultTask = {
-    id: crypto.randomUUID(),
-    title: "Learn React",
-    description:
-      "Master the art of building dynamic and interactive user interfaces with React, a powerful JavaScript library.",
-    tags: ["web", "react", "js"],
-    priority: "High",
-    isFavourite: true,
-  };
 
-  const [tasks, setTasks] = useState([defaultTask]);
+const  { tasks, setTasks } = useContext(TaskContext)
+
   const [showAddModal, setShowAddModal] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState(null);
   const [emptyTaskList, setEmptyTaskList] = useState(false);
@@ -68,8 +61,12 @@ const TaskBoard = () => {
   };
 
   const handleSearch = (searchText) => {
-    const searchedTask = tasks.filter((task) => task.title.toLowerCase().includes(searchText.toLowerCase()));
-    setTasks([...searchedTask]);
+    if (searchText) {
+      const searchedTask = tasks.filter((task) =>
+        task.title.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setTasks([...searchedTask]);
+    } else setTasks([...tasks]);
   };
 
   return (
@@ -89,7 +86,6 @@ const TaskBoard = () => {
           <TaskActions onAddTask={() => setShowAddModal(true)} handleDeleteAll={handleDeleteAll} />
 
           <TaskList
-            tasks={tasks}
             onEdit={handleEditTask}
             handleDelete={handleDelete}
             emptyTaskList={emptyTaskList}

@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaStar } from "react-icons/fa";
+import { TaskContext } from "../../context";
 
-const TaskList = ({ tasks, onEdit, handleDelete, emptyTaskList, onFavourite }) => {
+const TaskList = ({ onEdit, handleDelete, emptyTaskList, onFavourite }) => {
+  const { tasks } = useContext(TaskContext);
+
   return (
     <div className="overflow-auto">
       <table className="table-fixed overflow-auto xl:w-full">

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
 const SearchTask = ({ handleSearch }) => {
-  
   const [searchText, setSearchText] = useState("");
 
   const handleSearchClick = (e) => {
     e.preventDefault();
     handleSearch(searchText);
+
   };
 
   return (
