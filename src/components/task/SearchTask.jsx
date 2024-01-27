@@ -1,22 +1,30 @@
 import React, { useState } from "react";
 
-
 const SearchTask = ({ handleSearch }) => {
   const [searchText, setSearchText] = useState("");
 
-  const handleSearchClick = (e) => {
-    e.preventDefault();
+  const handleSearchClick = () => {
     handleSearch(searchText);
   };
 
-  const handleClearSearch = (e) => {
-    e.preventDefault();
+  const handleClearSearch = () => {
     setSearchText("");
     handleSearch("");
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleSearchClick();
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSubmit(e);
+    }
+  };
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className="flex">
         <div className="relative overflow-hidden rounded-lg text-gray-50 md:min-w-[380px] lg:min-w-[440px]">
           <input
@@ -27,11 +35,12 @@ const SearchTask = ({ handleSearch }) => {
             required
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
+            onKeyPress={handleKeyPress}
           />
           <button
             type="button"
             className="absolute right-2 top-0 h-full rounded-e-lg text-white md:right-4"
-            onClick={searchText ? (e) => handleSearchClick(e) : (e) => handleClearSearch(e)}
+            onClick={searchText ? handleSearchClick : handleClearSearch}
           >
             <svg
               className="h-4 w-4"
@@ -40,23 +49,6 @@ const SearchTask = ({ handleSearch }) => {
               fill="none"
               viewBox="0 0 20 20"
             >
-              {/* {searchText ? (
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                />
-              ) : (
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              )} */}
               <path
                 stroke="currentColor"
                 strokeLinecap="round"

@@ -2,12 +2,26 @@ import React, { useContext } from "react";
 import { FaStar } from "react-icons/fa";
 import { TaskContext } from "../../context";
 
-const getRandomColor = () => {
+const getRandomColor = (index) => {
+  const storedColors = JSON.parse(localStorage.getItem("tagColors")) || {};
+  if (storedColors[index]) {
+    return storedColors[index];
+  }
+
   const letters = "0123456789ABCDEF";
   let color = "#";
   for (let i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random() * 16)];
   }
+
+  localStorage.setItem(
+    "tagColors",
+    JSON.stringify({
+      ...storedColors,
+      [index]: color,
+    })
+  );
+
   return color;
 };
 
@@ -32,7 +46,7 @@ const TaskList = ({ onEdit, handleDelete, emptyTaskList, onFavourite }) => {
           </thead>
         )}
         <tbody>
-          {state.tasks.map((task) => (
+          {state.tasks.map((task, index) => (
             <tr
               key={task.id}
               className="border-b border-[#2E3443] [&>td]:align-baseline [&>td]:px-4 [&>td]:py-2"
@@ -54,7 +68,7 @@ const TaskList = ({ onEdit, handleDelete, emptyTaskList, onFavourite }) => {
                       <li key={tag}>
                         <span
                           className="inline-block h-5 whitespace-nowrap rounded-[45px] px-2.5 text-sm capitalize text-[#F4F5F6]"
-                          style={{ backgroundColor: getRandomColor() }} // Set random background color
+                          style={{ backgroundColor: getRandomColor(index) }}
                         >
                           {tag}
                         </span>
