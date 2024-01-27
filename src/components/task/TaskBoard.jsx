@@ -69,6 +69,7 @@ const TaskBoard = () => {
       type: "SEARCH",
       payload: { searchText },
     });
+    searchText || setEmptyTaskList(false);
   };
 
   return (
