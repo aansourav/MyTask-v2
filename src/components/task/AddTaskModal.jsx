@@ -29,8 +29,8 @@ const AddTaskModal = ({ onSave, taskToEdit, onCloseClick }) => {
 
   return (
     <>
-      <div className="bg-black z-10 bg-opacity-70 h-full w-full absolute top-0 left-0 "></div>
-      <form className=" absolute z-10 top-1/4 left-1/4 mx-auto my-10 w-full max-w-[540px] rounded-xl border border-[#FEFBFB]/[36%] bg-[#191D26] p-9 max-md:px-4 lg:my-20 lg:p-11">
+      <div className="bg-black z-10 bg-opacity-70 h-full w-full absolute top-0 left-0"></div>
+      <form className=" absolute z-10 top-1/3 left-1/3 mx-auto my-10 w-full max-w-[540px]  rounded-xl border border-[#FEFBFB]/[36%] bg-[#191D26] p-9 max-md:px-4 lg:my-20 lg:p-11">
         <h2 className="mb-9 text-center text-2xl font-bold text-white lg:mb-11 lg:text-[28px]">
           {isAdd ? "Add New Task" : "Edit Task"}
         </h2>
@@ -86,7 +86,9 @@ const AddTaskModal = ({ onSave, taskToEdit, onCloseClick }) => {
                 onChange={handleChange}
                 required
               >
-                <option value="">Select Priority</option>
+                <option defaultValue disabled value="">
+                  Select Priority
+                </option>
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
                 <option value="High">High</option>
