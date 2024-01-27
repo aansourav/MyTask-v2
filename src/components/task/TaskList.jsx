@@ -2,14 +2,23 @@ import React, { useContext } from "react";
 import { FaStar } from "react-icons/fa";
 import { TaskContext } from "../../context";
 
+const getRandomColor = () => {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
 const TaskList = ({ onEdit, handleDelete, emptyTaskList, onFavourite }) => {
-  const { tasks } = useContext(TaskContext);
+  const { state } = useContext(TaskContext);
 
   return (
     <div className="overflow-auto">
       <table className="table-fixed overflow-auto xl:w-full">
         {emptyTaskList ? (
-          <h1 className="text-center text-3xl">No task. Add Some</h1>
+          <h1 className="text-center text-3xl">Task List is empty!</h1>
         ) : (
           <thead>
             <tr>
@@ -23,7 +32,7 @@ const TaskList = ({ onEdit, handleDelete, emptyTaskList, onFavourite }) => {
           </thead>
         )}
         <tbody>
-          {tasks.map((task) => (
+          {state.tasks.map((task) => (
             <tr
               key={task.id}
               className="border-b border-[#2E3443] [&>td]:align-baseline [&>td]:px-4 [&>td]:py-2"
@@ -43,7 +52,10 @@ const TaskList = ({ onEdit, handleDelete, emptyTaskList, onFavourite }) => {
                   {Array.isArray(task.tags) &&
                     task.tags.map((tag) => (
                       <li key={tag}>
-                        <span className="inline-block h-5 whitespace-nowrap rounded-[45px] bg-[#00D991A1] px-2.5 text-sm capitalize text-[#F4F5F6]">
+                        <span
+                          className="inline-block h-5 whitespace-nowrap rounded-[45px] px-2.5 text-sm capitalize text-[#F4F5F6]"
+                          style={{ backgroundColor: getRandomColor() }} // Set random background color
+                        >
                           {tag}
                         </span>
                       </li>

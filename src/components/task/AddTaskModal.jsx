@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 const AddTaskModal = ({ onSave, taskToEdit, onCloseClick }) => {
   const [task, setTask] = useState(
@@ -98,6 +99,13 @@ const AddTaskModal = ({ onSave, taskToEdit, onCloseClick }) => {
           <button
             onClick={(e) => {
               e.preventDefault();
+
+              if (!task.title || !task.description || !task.tags || !task.priority) {
+                toast.warning("Please fillup all required fields: Title, Description, Tags, and Priority", {
+                  position: "top-center",
+                });
+                return;
+              }
               return onSave(task, isAdd);
             }}
             type="submit"

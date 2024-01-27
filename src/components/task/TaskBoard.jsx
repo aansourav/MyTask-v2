@@ -1,13 +1,12 @@
 import React, { useContext, useState } from "react";
+import { TaskContext } from "../../context";
 import AddTaskModal from "./AddTaskModal";
 import SearchTask from "./SearchTask";
 import TaskActions from "./TaskActions";
 import TaskList from "./TaskList";
-import { TaskContext } from "../../context";
 
 const TaskBoard = () => {
-
-const  { tasks, setTasks } = useContext(TaskContext)
+  const { state, dispatch } = useContext(TaskContext);
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState(null);
@@ -15,16 +14,19 @@ const  { tasks, setTasks } = useContext(TaskContext)
 
   const handleAddEditTask = (newTask, isAdd) => {
     if (isAdd) {
-      setTasks([...tasks, newTask]);
+      dispatch({
+        type: "ADD",
+        payload: {
+          ...newTask,
+        },
+      });
     } else {
-      setTasks(
-        tasks.map((task) => {
-          if (task.id === newTask.id) {
-            return newTask;
-          }
-          return task;
-        })
-      );
+      dispatch({
+        type: "EDIT",
+        payload: {
+          ...newTask,
+        },
+      });
     }
     setShowAddModal(false);
     setEmptyTaskList(false);
@@ -41,32 +43,32 @@ const  { tasks, setTasks } = useContext(TaskContext)
   };
 
   const handleDelete = (taskId) => {
-    const updatedTasks = tasks.filter((task) => task.id !== taskId);
-    setTasks(updatedTasks);
-    if (updatedTasks.length === 0) {
-      setEmptyTaskList(true);
-    }
+    dispatch({
+      type: "DELETE",
+      payload: { taskId },
+    });
+    setEmptyTaskList(state.tasks.length === 1);
   };
 
   const handleDeleteAll = () => {
-    setTasks([]);
+    dispatch({
+      type: "DELETE_ALL",
+    });
     setEmptyTaskList(true);
   };
 
   const handleFavourite = (taskId) => {
-    const favouriteTaskIndex = tasks.findIndex((task) => task.id === taskId);
-    const newTasks = [...tasks];
-    newTasks[favouriteTaskIndex].isFavourite = !newTasks[favouriteTaskIndex].isFavourite;
-    setTasks(newTasks);
+    dispatch({
+      type: "TOGGLE_FAVOURITE",
+      payload: { taskId },
+    });
   };
 
   const handleSearch = (searchText) => {
-    if (searchText) {
-      const searchedTask = tasks.filter((task) =>
-        task.title.toLowerCase().includes(searchText.toLowerCase())
-      );
-      setTasks([...searchedTask]);
-    } else setTasks([...tasks]);
+    dispatch({
+      type: "SEARCH",
+      payload: { searchText },
+    });
   };
 
   return (
