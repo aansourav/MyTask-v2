@@ -84,6 +84,9 @@ const taskReducer = (state, action) => {
         const filteredTasks = state.tasks.filter((task) =>
           task.title.toLowerCase().includes(action.payload.searchText.toLowerCase())
         );
+        if (action.payload.searchText && filteredTasks.length === 0) {
+          alert("No tasks found with the given search key.");
+        }
         return {
           ...state,
           tasks: filteredTasks,
